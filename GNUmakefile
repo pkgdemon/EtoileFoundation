@@ -1,3 +1,6 @@
+EtoileFoundation_CPPFLAGS += $(SSL_CFLAGS) -DGNUSTEP_MISSING_API_COMPATIBILITY
+EtoileFoundation_CPPFLAGS += -D_GNU_SOURCE # For Linux
+EtoileFoundation_CPPFLAGS += -IEtoileFoundation.framework/Versions/0/Headers
 PACKAGE_NAME = EtoileFoundation
 
 include $(GNUSTEP_MAKEFILES)/common.make
@@ -77,7 +80,7 @@ EtoileFoundation_HEADER_FILES = \
 	ETCArray.h \
 	Macros.h \
 	NSFileManager+TempFile.h \
-	NSFileHandle+Socket.h\
+	NSFileHandle+Socket.h \
 	ETPlugInRegistry.h \
 	ETByteSizeFormatter.h \
 	ETClassMirror.h \
@@ -101,7 +104,7 @@ EtoileFoundation_HEADER_FILES = \
 	ETUUID.h \
 	ETViewpoint.h \
 	NSArray+Etoile.h \
-	NSData+Hash.h\
+	NSData+Hash.h \
 	NSDictionary+Etoile.h \
 	NSIndexPath+Etoile.h \
 	NSIndexSet+Etoile.h \
@@ -132,7 +135,7 @@ EtoileFoundation_RESOURCE_FILES = \
 	UTIClassBindings.plist
 
 EtoileFoundation_OBJC_FILES = \
-	Source/NSFileManager+TempFile.m\
+	Source/NSFileManager+TempFile.m \
 	Source/NSFileHandle+Socket.m \
 	Source/ETByteSizeFormatter.m \
 	Source/ETClassMirror.m \
@@ -158,9 +161,9 @@ EtoileFoundation_OBJC_FILES = \
 	Source/ETUUID.m \
 	Source/ETUTI.m \
 	Source/ETViewpoint.m \
-	Source/NSBlocks.m\
+	Source/NSBlocks.m \
 	Source/NSArray+Etoile.m \
-	Source/NSData+Hash.m\
+	Source/NSData+Hash.m \
 	Source/NSDictionary+Etoile.m \
 	Source/NSIndexPath+Etoile.m \
 	Source/NSIndexSet+Etoile.m \
@@ -184,6 +187,9 @@ EtoileFoundation_OBJC_FILES = \
 	Source/ETValidationResult.m
 
 EtoileFoundation_C_FILES = Source/ETCArray.c
+
+# Add Headers directory only for C files
+Source/ETCArray.c_FILE_FLAGS = -I./Headers
 
 ifeq ($(test), yes)
 EtoileFoundation_OBJC_FILES += \
