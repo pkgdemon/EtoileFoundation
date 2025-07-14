@@ -14,6 +14,7 @@ LIBRARIES_DEPEND_UPON += -lm -lEtoileFoundation $(FND_LIBS) $(OBJC_LIBS) $(SYSTE
 # subprojects are built. Hence libEtoileFoundation.so is not present in the  
 # Build directory at EtoileXML build time.
 $(FRAMEWORK_NAME)_LIB_DIRS += -L../EtoileFoundation.framework
+$(FRAMEWORK_NAME)_CPPFLAGS += -F.. -I../EtoileFoundation.framework/Versions/0/Headers
 $(FRAMEWORK_NAME)_OBJCFLAGS += -std=c99
 
 $(FRAMEWORK_NAME)_OBJC_FILES = \
@@ -22,7 +23,7 @@ $(FRAMEWORK_NAME)_OBJC_FILES = \
 	ETXMLNullHandler.m \
 	ETXMLParser.m \
 	ETXMLXHTML-IMParser.m \
-	ETXMLString.m\
+	ETXMLString.m \
 	ETXMLWriter.m
 
 $(FRAMEWORK_NAME)_HEADER_FILES = \
@@ -33,7 +34,7 @@ $(FRAMEWORK_NAME)_HEADER_FILES = \
 	ETXMLNullHandler.h \
 	ETXMLXHTML-IMParser.h \
 	ETXMLParserDelegate.h \
-	ETXMLWriter.h\
+	ETXMLWriter.h \
 	NSAttributedString+HTML.h
 
 EtoileXMLDoc_EXCLUDED_DOC_FILES = TRXHTMLTest.h TRXHTMLTest.m ParserTest.m
