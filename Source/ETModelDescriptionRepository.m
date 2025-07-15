@@ -207,8 +207,10 @@ static NSString *anonymousPackageName = @"Anonymous";
     _unresolvedDescriptions = [[NSMutableSet alloc] init];
     _descriptionsByName = [[NSMutableDictionary alloc] init];
 #ifdef GNUSTEP
-    ASSIGN(_entityDescriptionsByClass, [NSMapTable mapTableWithStrongToStrongObjects]);
-    ASSIGN(_classesByEntityDescription, [NSMapTable mapTableWithStrongToStrongObjects]);
+    ASSIGN(_entityDescriptionsByClass, [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory 
+                                                              valueOptions:NSPointerFunctionsStrongMemory]);
+    ASSIGN(_classesByEntityDescription, [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory 
+                                                               valueOptions:NSPointerFunctionsStrongMemory]);
 #else
     ASSIGN(_entityDescriptionsByClass, [NSMapTable strongToStrongObjectsMapTable]);
     ASSIGN(_classesByEntityDescription, [NSMapTable strongToStrongObjectsMapTable]);
