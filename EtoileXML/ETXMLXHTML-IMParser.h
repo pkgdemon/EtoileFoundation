@@ -32,7 +32,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#ifdef GNUSTEP
+#import <AppKit/AppKit.h>  // GNUstep's AppKit
+#else
+#import <Cocoa/Cocoa.h>    // macOS AppKit via Cocoa
+#endif
 #import <EtoileXML/ETXMLNullHandler.h>
 
 /**
