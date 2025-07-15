@@ -32,11 +32,19 @@
  */
 
 #import <Foundation/Foundation.h>
-#ifdef GNUSTEP
+
+// Suppress the typedef redefinition warning that occurs with some header combinations
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtypedef-redefinition"
+
+#if defined(GNUSTEP) || defined(__GNUSTEP__)
 #import <AppKit/AppKit.h>  // GNUstep's AppKit
 #else
 #import <Cocoa/Cocoa.h>    // macOS AppKit via Cocoa
 #endif
+
+#pragma clang diagnostic pop
+
 #import <EtoileXML/ETXMLNullHandler.h>
 
 /**
