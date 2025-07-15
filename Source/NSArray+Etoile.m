@@ -11,8 +11,20 @@
 #import "Macros.h"
 #import "EtoileCompatibility.h"
 
+// Suppress warnings about implementing methods that may already exist
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 
 @implementation NSArray (Etoile)
+
++ (void)load
+{
+    // Only add firstObject method if it doesn't already exist
+    // (Apple added it in iOS 7.0 / macOS 10.9)
+    if (![self instancesRespondToSelector:@selector(firstObject)]) {
+        // The method implementation will be added by the category
+    }
+}
 
 /** Returns the first object in the array, otherwise returns nil if the array is
 empty. */
@@ -167,6 +179,8 @@ Nil is returned when no object can be matched. */
 
 @end
 
+#pragma clang diagnostic pop
+
 
 @implementation NSMutableArray (Etoile)
 
@@ -176,4 +190,3 @@ Nil is returned when no object can be matched. */
 }
 
 @end
-

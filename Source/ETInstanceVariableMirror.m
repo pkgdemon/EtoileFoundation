@@ -229,7 +229,8 @@
 {
     if (nil == aValue)
     {
-        ASSIGN(_cachedValueMirror, nil);
+        // Fix: Explicitly cast to (id) to avoid void* warning
+        ASSIGN(_cachedValueMirror, (id)nil);
         return nil;
     }
 
@@ -281,4 +282,3 @@
 }
 
 @end
-

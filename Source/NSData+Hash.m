@@ -16,7 +16,12 @@
 /* For BIO_flush(mem); on Mac OS X */
 #pragma GCC diagnostic ignored "-Wunused"
 
+// Suppress OpenSSL deprecation warnings - these functions still work
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation NSData (ETHash)
+
 - (NSString*)base64String
 {
     BIO * mem = BIO_new(BIO_s_mem());
@@ -33,6 +38,7 @@
     BIO_free_all(mem);
     return encodedString;
 }
+
 - (NSString*)ripemd160
 {
     unsigned char buffer[20];
@@ -59,6 +65,7 @@
             buffer[18],
             buffer[19]];
 }
+
 - (NSString*) sha1
 {
     unsigned char buffer[20];
@@ -85,6 +92,7 @@
             buffer[18],
             buffer[19]];
 }
+
 - (NSString*) md5
 {
     unsigned char buffer[16];
@@ -107,9 +115,13 @@
             buffer[14],
             buffer[15]];
 }
+
 @end
 
+#pragma clang diagnostic pop
+
 @implementation NSString (ETBase64)
+
 - (NSData*)base64DecodedData
 {
     BIO * mem = BIO_new_mem_buf((void *) [self UTF8String], 
@@ -130,6 +142,7 @@
     BIO_free_all(mem);
     return data;    
 }
+
 @end
 
 #else /* TARGET_OS_IPHONE || TARGET_OS_MAC */

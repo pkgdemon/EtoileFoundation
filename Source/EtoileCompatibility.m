@@ -14,7 +14,19 @@
 
 #ifdef GNUSTEP_MISSING_API_COMPATIBILITY
 
+// Suppress warnings about implementing methods that may already exist
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+
 @implementation NSSortDescriptor (ETGNUstepCompatibility)
+
++ (void)load
+{
+    // Only add methods if they don't already exist
+    if (![self respondsToSelector:@selector(sortDescriptorWithKey:ascending:)]) {
+        // The method implementations will be added by the category
+    }
+}
 
 + (id) sortDescriptorWithKey: (NSString *)aKey ascending: (BOOL)ascending
 {
@@ -63,6 +75,13 @@
 
 }
 
+- (void) dealloc
+{
+    DESTROY(_notification);
+    DESTROY(_block);
+    [super dealloc];
+}
+
 - (void) main
 {
     _block(_notification);
@@ -91,11 +110,20 @@
     return self;
 }
 
+- (void) dealloc
+{
+    DESTROY(_queue);
+    DESTROY(_block);
+    [super dealloc];
+}
+
 - (void) didReceiveNotification: (NSNotification *)notif
 {
     if (_queue != nil)
     {
-        [_queue addOperation: [[CONotificationBlockOperation alloc] initWithNotification: notif block: _block]];
+        CONotificationBlockOperation *op = [[CONotificationBlockOperation alloc] initWithNotification: notif block: _block];
+        [_queue addOperation: op];
+        [op release];
     }
     else
     {
@@ -107,15 +135,25 @@
 
 @implementation NSNotificationCenter (ETGNUstepCompatibility)
 
++ (void)load
+{
+    // Only add method if it doesn't already exist
+    if (![self instancesRespondToSelector:@selector(addObserverForName:object:queue:usingBlock:)]) {
+        // The method implementation will be added by the category
+    }
+}
+
 - (id)addObserverForName: (NSString *)name object: (id)object queue: (NSOperationQueue *)queue usingBlock: (void (^)(NSNotification *))block
 {
     CONotificationObserver *observer = [[CONotificationObserver alloc] initWithQueue: queue block: block];
 
     [self addObserver: observer selector: @selector(didReceiveNotification:) name: name object: object];
 
-    return observer;
+    return [observer autorelease];
 }
 
 @end
+
+#pragma clang diagnostic pop
 
 #endif
