@@ -490,8 +490,11 @@ static NSRecursiveLock *lock = nil;
 {
     CREATE_AUTORELEASE_POOL(pool);
 #ifdef GNUSTEP
-    ASSIGN(traitApplicationsByClass, [NSMapTable mapTableWithWeakToStrongObjects]);
+    // Use explicit constructor for GNUstep
+    ASSIGN(traitApplicationsByClass, [NSMapTable mapTableWithKeyOptions: NSPointerFunctionsWeakMemory
+                                                           valueOptions: NSPointerFunctionsStrongMemory]);
 #else
+    // Use convenience method for macOS/iOS
     ASSIGN(traitApplicationsByClass, [NSMapTable weakToStrongObjectsMapTable]);
 #endif
     lock = [[NSRecursiveLock alloc] init];
